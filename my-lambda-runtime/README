@@ -1,0 +1,9 @@
+my-lambda-runtime/
+├── Dockerfile
+├── bootstrap
+├── nodejs
+│   ├── app.js
+│   └── package.json
+└── aws
+    └── extensions
+        └── aws-sdk.js

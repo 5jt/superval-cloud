@@ -1,0 +1,10 @@
+{
+  "name": "lambda-api-reverse",
+  "version": "1.0.0",
+  "description": "AWS Lambda for reversing a string",
+  "main": "app.js",
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"No tests available\""
+  }
+}
