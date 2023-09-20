@@ -2,5 +2,5 @@
 
 curl --include \
 	--request POST 'http://localhost:3000/reverse' \
-	--header 'Content-Type: plain/text' \
-	--data-binary '@input_string.txt'
+	--header 'Content-Type: text/plain' \
+	--data '@input_string.txt'

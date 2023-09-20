@@ -23,7 +23,7 @@ app.use(express.text()); // Parse plain text request bodies
 // });
 
 app.get('/hello', (req, res) => {
-	res.send("Why, hello there – Franklin D. Roosevelt");
+	res.send("Why, hello there – Frankie D. Roosevelt");
 	console.log('Where’s Eleanor?');
 });
 
