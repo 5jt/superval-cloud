@@ -1,7 +1,10 @@
 // https://chat.openai.com/c/2e41a4e7-5442-4afa-8379-00d67bea7803
 
 const express = require('express');
+const fs = require('fs/promises'); // Using the Promises version of the fs module
 const app = express();
+const my_version = '2.0'
+// https://stackoverflow.com/questions/7790811/how-do-i-put-variables-inside-javascript-strings
 
 // To access data sent in the request body, you'll need to use middleware 
 // like `express.json()` or `express.urlencoded()` to parse the data.
@@ -23,8 +26,8 @@ app.use(express.text()); // Parse plain text request bodies
 // });
 
 app.get('/hello', (req, res) => {
-	res.send("Why, hello there – Frankie D. Roosevelt");
-	console.log('Where’s Eleanor?');
+	res.send("Hello sailor");
+	console.log('Where’d you get him from?');
 });
 
 app.get('/reverse', (req, res) => {
@@ -35,16 +38,43 @@ app.get('/reverse', (req, res) => {
 });
 
 app.get('/version', (req, res) => {
-	console.log('A version of the truth');
-	res.send('1.0');
+	console.log('Another version of the truth');
+	res.send(`${{my_version}}`);
 });
 
 app.listen(3000, function () {
-	console.log("app glistening on port 3000")
+	console.log(`Version ${my_version} listening on port 3000`)
 });
 
-app.post('/reverse', (req, res) => {
+app.post('/reverse', async (req, res) => {
   const requestBody = req.body;
-  console.log('POST Request Body:', requestBody);
-  res.send('POST received');
+  
+  try {
+    // Step 1: Write the received string to input.txt
+    await fs.writeFile('input.txt', requestBody);
+    console.log('Received string written to input.txt');
+    
+    // Step 2: Read input.txt
+    const inputText = await fs.readFile('input.txt', 'utf-8');
+    
+    // Step 3: Reverse the string
+    const reversedText = [...inputText].reverse().join('');
+    
+    // Step 4: Write the reversed string to output.txt
+    await fs.writeFile('output.txt', reversedText);
+    console.log('Reversed string written to output.txt');
+    
+    // Step 5: Return output.txt as the response body
+    res.sendFile('output.txt', { root: __dirname }, (err) => {
+      if (err) {
+        console.error('Error sending file', err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        console.log('Response sent successfully');
+      }
+    });
+  } catch (error) {
+    console.error('ERROR during file operations', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
